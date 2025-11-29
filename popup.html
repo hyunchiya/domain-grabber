@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      width: 340px;
+      height: 520px;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      color: #e2e8f0;
+      overflow: hidden;
+    }
+    
+    .container {
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      height: 520px;
+      overflow-y: auto;
+    }
+    
+    /* Header Section */
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 16px 20px 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      animation: rotate 20s linear infinite;
+    }
+    
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    
+    .header-content {
+      position: relative;
+      z-index: 1;
+    }
+    
+    .header-icon {
+      width: 44px;
+      height: 44px;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      margin: 0 auto 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    h3 {
+      color: #ffffff;
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      text-align: center;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .subtitle {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.85);
+      text-align: center;
+      font-weight: 500;
+    }
+    
+    /* Stats Section */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      padding: 12px 16px;
+      background: rgba(15, 23, 42, 0.5);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    .stat-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 10px 8px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+    
+    .stat-card:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(102, 126, 234, 0.3);
+      transform: translateY(-2px);
+    }
+    
+    .stat-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: #667eea;
+      margin-bottom: 3px;
+      font-variant-numeric: tabular-nums;
+    }
+    
+    .stat-label {
+      font-size: 10px;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 600;
+    }
+    
+    /* Main Content */
+    .main-content {
+      padding: 16px;
+      flex: 1;
+      overflow-y: auto;
+    }
+    
+    /* Settings Card */
+    .settings-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 14px;
+      backdrop-filter: blur(10px);
+    }
+    
+    .settings-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    
+    .settings-icon {
+      font-size: 16px;
+    }
+    
+    .settings-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #f1f5f9;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+    
+    .setting-group {
+      margin-bottom: 12px;
+    }
+    
+    .setting-group:last-child {
+      margin-bottom: 0;
+    }
+    
+    .setting-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    
+    .label-text {
+      font-size: 12px;
+      color: #cbd5e1;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .label-icon {
+      font-size: 14px;
+    }
+    
+    .label-info {
+      font-size: 10px;
+      color: #64748b;
+      font-weight: 400;
+      padding: 3px 6px;
+      background: rgba(100, 116, 139, 0.2);
+      border-radius: 4px;
+    }
+    
+    .input-group {
+      position: relative;
+    }
+    
+    input[type="number"] {
+      width: 100%;
+      padding: 9px 12px;
+      background: rgba(15, 23, 42, 0.6);
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      font-variant-numeric: tabular-nums;
+    }
+    
+    input[type="number"]:hover {
+      background: rgba(15, 23, 42, 0.8);
+      border-color: rgba(102, 126, 234, 0.3);
+    }
+    
+    input[type="number"]:focus {
+      outline: none;
+      background: rgba(15, 23, 42, 0.9);
+      border-color: #667eea;
+      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
+    }
+    
+    .input-hint {
+      font-size: 10px;
+      color: #64748b;
+      margin-top: 4px;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+    
+    /* Status Bar */
+    .status-bar {
+      margin-bottom: 12px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 11px;
+      line-height: 1.5;
+      font-weight: 500;
+      display: none;
+      align-items: flex-start;
+      gap: 10px;
+      animation: slideDown 0.3s ease;
+    }
+    
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    .status-bar.show {
+      display: flex;
+    }
+    
+    .status-icon {
+      font-size: 16px;
+      margin-top: 0;
+    }
+    
+    .status-content {
+      flex: 1;
+    }
+    
+    .status-message {
+      color: inherit;
+      margin-bottom: 3px;
+      font-size: 11px;
+    }
+    
+    .status-detail {
+      font-size: 10px;
+      opacity: 0.8;
+    }
+    
+    .status-bar.progress {
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%);
+      border: 1px solid rgba(102, 126, 234, 0.3);
+      color: #a5b4fc;
+    }
+    
+    .status-bar.success {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(16, 185, 129, 0.15) 100%);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      color: #86efac;
+    }
+    
+    .status-bar.error {
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(220, 38, 38, 0.15) 100%);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #fca5a5;
+    }
+    
+    /* Progress Bar */
+    .progress-bar-container {
+      width: 100%;
+      height: 4px;
+      background: rgba(15, 23, 42, 0.6);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-top: 6px;
+    }
+    
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+      border-radius: 2px;
+      transition: width 0.3s ease;
+      box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
+    }
+    
+    /* Action Buttons */
+    .action-buttons {
+      display: grid;
+      gap: 8px;
+    }
+    
+    .btn {
+      width: 100%;
+      padding: 11px 16px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.6s ease;
+    }
+    
+    .btn:hover:not(:disabled)::before {
+      left: 100%;
+    }
+    
+    .btn-icon {
+      font-size: 15px;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+    }
+    
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(102, 126, 234, 0.5);
+    }
+    
+    .btn-primary:active:not(:disabled) {
+      transform: translateY(0);
+    }
+    
+    .btn-stop {
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      color: white;
+      box-shadow: 0 8px 24px rgba(239, 68, 68, 0.4);
+    }
+    
+    .btn-stop:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(239, 68, 68, 0.5);
+    }
+    
+    .btn-download {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+      box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4);
+    }
+    
+    .btn-download:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(16, 185, 129, 0.5);
+    }
+    
+    .btn:disabled {
+      background: rgba(71, 85, 105, 0.3);
+      color: #475569;
+      cursor: not-allowed;
+      box-shadow: none;
+      opacity: 0.5;
+    }
+    
+    .btn:disabled:hover {
+      transform: none;
+    }
+    
+    /* Tips Box */
+    .tips-box {
+      background: rgba(251, 191, 36, 0.1);
+      border: 1px solid rgba(251, 191, 36, 0.3);
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-top: 12px;
+      font-size: 10px;
+      color: #fbbf24;
+      display: none;
+      animation: slideDown 0.3s ease;
+    }
+    
+    .tips-box.show {
+      display: block;
+    }
+    
+    .tips-title {
+      font-weight: 700;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+    }
+    
+    .tips-list {
+      list-style: none;
+      padding-left: 0;
+    }
+    
+    .tips-list li {
+      margin-bottom: 3px;
+      padding-left: 12px;
+      position: relative;
+      font-size: 10px;
+    }
+    
+    .tips-list li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+    }
+    
+    /* Footer */
+    .footer {
+      padding: 10px 16px;
+      background: rgba(15, 23, 42, 0.5);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      text-align: center;
+    }
+    
+    .footer-text {
+      font-size: 10px;
+      color: #64748b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+    
+    .footer-link {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.2s ease;
+    }
+    
+    .footer-link:hover {
+      color: #818cf8;
+    }
+    
+    /* Animations */
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.6;
+      }
+    }
+    
+    .pulse {
+      animation: pulse 2s infinite;
+    }
+    
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.5);
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: rgba(100, 116, 139, 0.5);
+      border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(100, 116, 139, 0.7);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <div class="header-content">
+        <div class="header-icon">🌐</div>
+        <h3>Domain Extractor Pro | Rewrite from @maw3six</h3>
+        <div>Telegram support: t.me/hyunchiya</div>
+        <div class="subtitle">Contact Report : t.me/maw3six</div>
+      </div>
+    </div>
+    
+    <!-- Stats -->
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-value" id="statDomains">0</div>
+        <div class="stat-label">Domains</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="statPages">0</div>
+        <div class="stat-label">Pages</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="statProgress">0%</div>
+        <div class="stat-label">Progress</div>
+      </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Settings -->
+      <div class="settings-card">
+        <div class="settings-header">
+          <span class="settings-icon">⚙️</span>
+          <span class="settings-title">Extraction Settings</span>
+        </div>
+        
+        <div class="setting-group">
+          <div class="setting-label">
+            <span class="label-text">
+              <span class="label-icon">📄</span>
+              Maximum Pages
+            </span>
+            <span class="label-info">1-500</span>
+          </div>
+          <div class="input-group">
+            <input type="number" id="maxPages" value="100" min="1" max="500">
+          </div>
+          <div class="input-hint">
+            ℹ️ Number of search result pages to process
+          </div>
+        </div>
+        
+        <div class="setting-group">
+          <div class="setting-label">
+            <span class="label-text">
+              <span class="label-icon">⏱️</span>
+              Request Delay
+            </span>
+            <span class="label-info">500-5000ms</span>
+          </div>
+          <div class="input-group">
+            <input type="number" id="pauseMs" value="1200" min="500" max="5000" step="100">
+          </div>
+          <div class="input-hint">
+            ℹ️ Delay between requests to avoid rate limiting
+          </div>
+        </div>
+      </div>
+      
+      <!-- Status -->
+      <div id="status" class="status-bar">
+        <span class="status-icon" id="statusIcon">ℹ️</span>
+        <div class="status-content">
+          <div class="status-message" id="statusMessage">Ready to extract</div>
+          <div class="status-detail" id="statusDetail"></div>
+          <div class="progress-bar-container" id="progressBarContainer" style="display: none;">
+            <div class="progress-bar-fill" id="progressBarFill" style="width: 0%"></div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Tips Box for Rate Limiting -->
+      <div id="tipsBox" class="tips-box">
+        <div class="tips-title">⚠️ Rate Limit Tips (HTTP 429)</div>
+        <ul class="tips-list">
+          <li>Increase delay to 2000-3000ms</li>
+          <li>Reduce max pages to 20-50</li>
+          <li>Wait 5-10 minutes before retry</li>
+          <li>Use VPN or different network</li>
+        </ul>
+      </div>
+      
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <button id="extractBtn" class="btn btn-primary">
+          <span class="btn-icon">▶️</span>
+          <span>Start Extraction</span>
+        </button>
+        
+        <button id="stopBtn" class="btn btn-stop" disabled>
+          <span class="btn-icon">⏹️</span>
+          <span>Stop Extraction</span>
+        </button>
+        
+        <div id="results" style="display: none;">
+          <button id="downloadBtn" class="btn btn-download">
+            <span class="btn-icon">💾</span>
+            <span>Download Results</span>
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Footer 
+    <div class="footer">
+      <div class="footer-text">
+        Made with ❤️ • <a href="#" class="footer-link">Documentation</a>
+      </div>
+    </div>
+    -->
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>
