@@ -29,12 +29,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const pauseMs = parseInt(pauseMsInput.value);
     
     // Validate inputs
-    if (isNaN(maxPages) || maxPages < 1 || maxPages > 500) {
+    if (isNaN(maxPages) || maxPages < 1 || maxPages > 50000) {
       showStatus('Invalid max pages value', 'error', 'Please enter a value between 1 and 500');
       return;
     }
     
-    if (isNaN(pauseMs) || pauseMs < 500 || pauseMs > 5000) {
+    if (isNaN(pauseMs) || pauseMs < 500 || pauseMs > 10000) {
       showStatus('Invalid delay value', 'error', 'Please enter a value between 500 and 5000ms');
       return;
     }
