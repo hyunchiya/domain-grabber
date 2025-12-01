@@ -16,7 +16,6 @@ document.addEventListener('DOMContentLoaded', async function() {
   const STATE_KEY = "hyunchiya_grabber_state";
   const DATA_KEY = "grabbed_domains_google_fetch";
 
-  // 1. Load Saved Config saat Popup dibuka pertamakali
   const savedState = await getStorage(STATE_KEY);
   if (savedState) {
     if (savedState.maxPages) maxPagesInput.value = savedState.maxPages;
@@ -27,7 +26,6 @@ document.addEventListener('DOMContentLoaded', async function() {
 
   setInterval(updateUI, 1000);
 
-  // Hapus validasi pembatas agar bisa input angka bebas
   maxPagesInput.addEventListener('change', function() {
     let value = parseInt(this.value);
     if (value < 1) this.value = 1;
@@ -101,11 +99,9 @@ document.addEventListener('DOMContentLoaded', async function() {
     const max = state.maxPages || 100;
     const current = state.currentPage || 0;
     
-    // Logic Persentase yang lebih baik
     let percent = 0;
     if (max > 0) {
       percent = (current / max) * 100;
-      // Jika hasil koma kecil (misal 0.2%), tampilkan 1 desimal. Jika bulat, tampilkan bulat.
       if (percent > 0 && percent < 1) {
         percent = percent.toFixed(1); 
       } else {
@@ -120,11 +116,9 @@ document.addEventListener('DOMContentLoaded', async function() {
       extractBtn.disabled = true;
       stopBtn.disabled = false;
       
-      // Kunci input saat berjalan agar tidak diedit
       maxPagesInput.disabled = true;
       pauseMsInput.disabled = true;
       
-      // Paksa input menampilkan nilai yang sedang berjalan
       if (state.maxPages) maxPagesInput.value = state.maxPages;
       if (state.pauseMs) pauseMsInput.value = state.pauseMs;
 
